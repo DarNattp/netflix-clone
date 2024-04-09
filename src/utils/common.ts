@@ -1,5 +1,10 @@
-export const getRandomNumber = (maxNumber: number) =>
-  Math.floor(Math.random() * maxNumber);
+export const getRandomNumber = async (maxNumber: number) => {
+  const cryptoObj = window.crypto || window.msCrypto; // For IE 11
+  const randomBytes = new Uint32Array(1);
+  await cryptoObj.getRandomValues(randomBytes);
+  const randomValue = randomBytes[0] / (0xffffffff + 1);
+  return Math.floor(randomValue * maxNumber);
+};
 
 export const formatMinuteToReadable = (minutes: number) => {
   const h = Math.floor(minutes / 60);
